@@ -14,15 +14,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const router = express_1.default.Router();
-const User = require("../models/user");
-const { createUser } = require("../controller/user");
+const { createUser } = require("../services/user");
 router.post("/create", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = new User();
-    createUser(req.body);
-    // Process req.body then create new user
-    return res.send({
-        message: "Test User ",
-    });
+    if (!req.body.hasOwnProperty("firstname" && "lastname" && "email" && "keyMaster" && "password")) {
+        return res
+            .status(406)
+            .send({ status: "client error", message: "Incomplete user input" });
+    }
+    else {
+        const { firstname, lastname, email, keyMaster, password, companyName, companyUrl, } = req.body;
+        const user = yield createUser(firstname, lastname, email, keyMaster, password, companyName, companyUrl);
+        return res.send({
+            status: typeof user !== "string" ? "OK" : "Error",
+            message: user,
+        });
+    }
 }));
 module.exports = router;
 //# sourceMappingURL=user.js.map

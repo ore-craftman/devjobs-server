@@ -27,7 +27,7 @@ app.use(`/${baseUrl}/users`, userRoutes);
 try {
     app.listen(port, () => {
         console.log(`⚡️[server]: Live @ https://localhost:${port}`);
-        mongoose.set("bufferCommands", false);
+        mongoose.set("bufferCommands", true);
         mongoose.connect(dbURI, (err) => {
             if (err) {
                 console.log("DB Connection Err", err);

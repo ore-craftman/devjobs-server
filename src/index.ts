@@ -31,7 +31,7 @@ try {
   app.listen(port, (): void => {
     console.log(`⚡️[server]: Live @ https://localhost:${port}`);
 
-    mongoose.set("bufferCommands", false);
+    mongoose.set("bufferCommands", true);
     mongoose.connect(dbURI, (err: any) => {
       if (err) {
         console.log("DB Connection Err", err);

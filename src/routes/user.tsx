@@ -76,21 +76,15 @@ router.get(
 );
 
 router.delete(
-  "/delete",
+  "/account/delete/:id",
   async (req: Request, res: Response): Promise<Response> => {
-    if (!req.body.hasOwnProperty("id")) {
-      return res
-        .status(406)
-        .send({ status: "Client error", message: "Incomplete client input" });
-    } else {
-      const { id } = req.body;
-      const deteledInstance = await deleteUser(id);
-      return res.send({
-        status: deteledInstance !== 1 ? "Error" : "OK",
-        message:
-          deteledInstance !== 1 ? "Account not registed" : "Account deleted",
-      });
-    }
+    const { id } = req.params;
+    const deteledInstance = await deleteUser(id);
+    return res.send({
+      status: deteledInstance !== 1 ? "Error" : "OK",
+      message:
+        deteledInstance !== 1 ? "Account not registed" : "Account deleted",
+    });
   }
 );
 

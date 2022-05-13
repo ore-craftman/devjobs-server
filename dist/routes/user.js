@@ -53,20 +53,13 @@ router.get("/account/:id", (req, res) => __awaiter(void 0, void 0, void 0, funct
         message: user,
     });
 }));
-router.delete("/delete", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!req.body.hasOwnProperty("id")) {
-        return res
-            .status(406)
-            .send({ status: "Client error", message: "Incomplete client input" });
-    }
-    else {
-        const { id } = req.body;
-        const deteledInstance = yield deleteUser(id);
-        return res.send({
-            status: deteledInstance !== 1 ? "Error" : "OK",
-            message: deteledInstance !== 1 ? "Account not registed" : "Account deleted",
-        });
-    }
+router.delete("/account/delete/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const deteledInstance = yield deleteUser(id);
+    return res.send({
+        status: deteledInstance !== 1 ? "Error" : "OK",
+        message: deteledInstance !== 1 ? "Account not registed" : "Account deleted",
+    });
 }));
 module.exports = router;
 //# sourceMappingURL=user.js.map

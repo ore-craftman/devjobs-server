@@ -1,5 +1,6 @@
 import * as crypto from "crypto";
 const { User } = require("../models/user");
+const mongoose = require("mongoose");
 
 const createUser = async (
   firstname: string,
@@ -38,4 +39,34 @@ const createUser = async (
   }
 };
 
-module.exports = { createUser };
+const authenticateUser = async (email: string, password: string) => {
+  const user = await User.findOne({ email: email });
+  if (!user) {
+    return "Invalid email address";
+  } else {
+    if (
+      user.hash !==
+      crypto.pbkdf2Sync(password, user.salt, 1000, 64, `sha512`).toString(`hex`)
+    ) {
+      return "Wrong Password";
+    } else {
+      return user;
+    }
+  }
+};
+
+const getUserById = async (id: any) => {
+  if (!mongoose.Types.ObjectId.isValid(id)) return "Invalid user id";
+  const user = await User.findById(id).exec();
+  if (!user) return "No account with specified Id";
+  else return user;
+};
+
+const deleteUser = async (id: any) => {
+  if (!mongoose.Types.ObjectId.isValid(id)) return "Invalid user id";
+
+  const deletedData = await User.deleteOne({ _id: id });
+  return deletedData.deletedCount;
+};
+
+module.exports = { createUser, authenticateUser, getUserById, deleteUser };

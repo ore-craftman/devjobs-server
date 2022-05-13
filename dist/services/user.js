@@ -34,6 +34,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const crypto = __importStar(require("crypto"));
 const { User } = require("../models/user");
+const mongoose = require("mongoose");
 const createUser = (firstname, lastname, email, keyMaster, password, companyName, companyUrl) => __awaiter(void 0, void 0, void 0, function* () {
     if (yield User.exists({ email: email })) {
         return "Account already exist";
@@ -60,5 +61,35 @@ const createUser = (firstname, lastname, email, keyMaster, password, companyName
         }
     }
 });
-module.exports = { createUser };
+const authenticateUser = (email, password) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield User.findOne({ email: email });
+    if (!user) {
+        return "Invalid email address";
+    }
+    else {
+        if (user.hash !==
+            crypto.pbkdf2Sync(password, user.salt, 1000, 64, `sha512`).toString(`hex`)) {
+            return "Wrong Password";
+        }
+        else {
+            return user;
+        }
+    }
+});
+const getUserById = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!mongoose.Types.ObjectId.isValid(id))
+        return "Invalid user id";
+    const user = yield User.findById(id).exec();
+    if (!user)
+        return "No account with specified Id";
+    else
+        return user;
+});
+const deleteUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!mongoose.Types.ObjectId.isValid(id))
+        return "Invalid user id";
+    const deletedData = yield User.deleteOne({ _id: id });
+    return deletedData.deletedCount;
+});
+module.exports = { createUser, authenticateUser, getUserById, deleteUser };
 //# sourceMappingURL=user.js.map

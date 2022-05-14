@@ -16,7 +16,11 @@ const express_1 = __importDefault(require("express"));
 const router = express_1.default.Router();
 const { createUser, authenticateUser, getUserById, deleteUser, } = require("../services/user");
 router.post("/create", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!req.body.hasOwnProperty("firstname" && "lastname" && "email" && "keyMaster" && "password")) {
+    if (!req.body.hasOwnProperty("firstname") ||
+        !req.body.hasOwnProperty("lastname") ||
+        !req.body.hasOwnProperty("email") ||
+        !req.body.hasOwnProperty("password") ||
+        !req.body.hasOwnProperty("keyMaster")) {
         return res
             .status(406)
             .send({ status: "Client error", message: "Incomplete user input" });
@@ -31,7 +35,8 @@ router.post("/create", (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 }));
 router.post("/auth", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!req.body.hasOwnProperty("email" && "password")) {
+    if (!req.body.hasOwnProperty("email") ||
+        !req.body.hasOwnProperty("password")) {
         return res
             .status(406)
             .send({ status: "Client error", message: "Incomplete user input" });

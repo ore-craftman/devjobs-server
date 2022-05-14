@@ -25,18 +25,22 @@ const userRoutes = require("./routes/user");
 app.use(`/${baseUrl}/users`, userRoutes);
 // Server && DB Handler
 try {
-    app.listen(port, () => {
-        console.log(`⚡️[server]: Live @ https://localhost:${port}`);
-        mongoose.set("bufferCommands", true);
-        mongoose.connect(dbURI, (err) => {
-            if (err) {
-                console.log("DB Connection Err", err);
+    if (process.env.NODE_ENV !== "test")
+        app.listen(port, () => {
+            console.log(`⚡️[server]: Live @ https://localhost:${port}`);
+            mongoose.set("bufferCommands", true);
+            if (process.env.NODE_ENV !== "test") {
+                mongoose.connect(dbURI, (err) => {
+                    if (err) {
+                        console.log("DB Connection Err", err);
+                    }
+                    console.log(`⚡️[Datase]: Connected`);
+                });
             }
-            console.log(`⚡️[Datase]: Connected`);
         });
-    });
 }
 catch (error) {
     console.error(`Error occured: ${error.message}`);
 }
+module.exports = app;
 //# sourceMappingURL=index.js.map

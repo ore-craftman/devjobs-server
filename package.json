@@ -13,11 +13,21 @@
   "devDependencies": {
     "@types/express": "^4.17.13",
     "@types/node": "^17.0.30",
-    "nodemon": "^2.0.16"
+    "jest": "^28.1.0",
+    "mongodb-memory-server": "^8.5.2",
+    "nodemon": "^2.0.16",
+    "supertest": "^6.2.3"
   },
   "scripts": {
     "build": "tsc",
     "start": "tsc & node .",
-    "dev": "tsc -w & nodemon ."
+    "dev": "tsc -w & nodemon .",
+    "test": "NODE_ENV=test jest --watchAll --coverage --verbose"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
   }
 }

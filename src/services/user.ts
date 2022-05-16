@@ -57,6 +57,7 @@ const authenticateUser = async (email: string, password: string) => {
 
 const getUserById = async (id: any) => {
   if (!mongoose.Types.ObjectId.isValid(id)) return "Invalid user id";
+
   const user = await User.findById(id).exec();
   if (!user) return "No account with specified Id";
   else return user;

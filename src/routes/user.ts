@@ -40,7 +40,7 @@ router.post("/create", async (req: Request, res: Response) => {
     );
     return res.send({
       status: typeof user !== "string" ? "OK" : "Error",
-      message: user,
+      data: user,
     });
   }
 });
@@ -59,7 +59,7 @@ router.post("/auth", async (req: Request, res: Response): Promise<Response> => {
 
     return res.send({
       status: typeof user !== "string" ? "OK" : "Error",
-      message: user,
+      data: user,
     });
   }
 });

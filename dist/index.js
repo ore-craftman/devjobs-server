@@ -6,6 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
+const userRoutes = require("./routes/user");
+const jobRoutes = require("./routes/job");
 dotenv.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT;
@@ -20,9 +22,9 @@ app.use((req, res, next) => {
 // Body Parser
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
-// Routes Handler
-const userRoutes = require("./routes/user");
+// Route Handler
 app.use(`/${baseUrl}/users`, userRoutes);
+app.use(`/${baseUrl}/job`, jobRoutes);
 // Server && DB Handler
 try {
     if (process.env.NODE_ENV !== "test")
@@ -31,10 +33,10 @@ try {
             mongoose.set("bufferCommands", true);
             if (process.env.NODE_ENV !== "test") {
                 mongoose.connect(dbURI, (err) => {
-                    if (err) {
+                    if (err)
                         console.log("DB Connection Err", err);
-                    }
-                    console.log(`⚡️[Datase]: Connected`);
+                    else
+                        console.log(`⚡️[Datase]: Connected`);
                 });
             }
         });

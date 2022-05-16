@@ -1,6 +1,9 @@
 import express, { Express, Request, Response } from "express";
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
+
+const userRoutes = require("./routes/user");
+const jobRoutes = require("./routes/job");
 dotenv.config();
 
 const app: Express = express();
@@ -22,9 +25,9 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes Handler
-const userRoutes = require("./routes/user");
+// Route Handler
 app.use(`/${baseUrl}/users`, userRoutes);
+app.use(`/${baseUrl}/job`, jobRoutes);
 
 // Server && DB Handler
 try {
@@ -36,10 +39,8 @@ try {
 
       if (process.env.NODE_ENV !== "test") {
         mongoose.connect(dbURI, (err: any) => {
-          if (err) {
-            console.log("DB Connection Err", err);
-          }
-          console.log(`⚡️[Datase]: Connected`);
+          if (err) console.log("DB Connection Err", err);
+          else console.log(`⚡️[Datase]: Connected`);
         });
       }
     });

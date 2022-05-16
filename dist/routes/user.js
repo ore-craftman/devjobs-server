@@ -30,7 +30,7 @@ router.post("/create", (req, res) => __awaiter(void 0, void 0, void 0, function*
         const user = yield createUser(firstname, lastname, email, keyMaster, password, companyName, companyUrl);
         return res.send({
             status: typeof user !== "string" ? "OK" : "Error",
-            message: user,
+            data: user,
         });
     }
 }));
@@ -46,7 +46,7 @@ router.post("/auth", (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const user = yield authenticateUser(email, password);
         return res.send({
             status: typeof user !== "string" ? "OK" : "Error",
-            message: user,
+            data: user,
         });
     }
 }));

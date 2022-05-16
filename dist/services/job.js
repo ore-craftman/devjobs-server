@@ -53,12 +53,12 @@ const updateJob = (id, newData) => __awaiter(void 0, void 0, void 0, function* (
     if (!updateJob)
         return "Error updating job";
     else
-        return updateJob;
+        return updatedJob;
 });
 const deleteJob = (id) => __awaiter(void 0, void 0, void 0, function* () {
     if (!mongoose.Types.ObjectId.isValid(id))
         return "Invalid job id";
-    const deletedData = yield User.deleteOne({ _id: id });
+    const deletedData = yield Job.deleteOne({ _id: id });
     return deletedData.deletedCount;
 });
 module.exports = { addNewJob, getJobById, getAllJobs, updateJob, deleteJob };

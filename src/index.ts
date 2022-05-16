@@ -1,5 +1,6 @@
 import express, { Express, Request, Response } from "express";
 const dotenv = require("dotenv");
+const morgan = require("morgan");
 const mongoose = require("mongoose");
 
 const userRoutes = require("./routes/user");
@@ -11,6 +12,7 @@ const port = process.env.PORT;
 const dbURI = process.env.MONGODB_URI;
 const baseUrl = process.env.BASE_URL;
 
+app.use(morgan("combined"));
 // Cors Handler
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");

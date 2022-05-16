@@ -47,5 +47,25 @@ router.get("/single/:id", (req, res) => __awaiter(void 0, void 0, void 0, functi
         data: job,
     });
 }));
+router.get("/jobs", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const jobs = yield getAllJobs();
+    return res.send({ status: "OK", data: jobs });
+}));
+router.post("/update", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id, newData } = req.body;
+    const updatedJob = yield updateJob(id, newData);
+    return res.send({
+        status: typeof updatedJob !== "string" ? "OK" : "Error",
+        data: updatedJob,
+    });
+}));
+router.delete("/delete/single/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const deletedJob = yield deleteJob(id);
+    return res.send({
+        status: deletedJob == 1 ? "OK" : "Error",
+        data: deletedJob == 1 ? "Deleted" : "Error deleting job",
+    });
+}));
 module.exports = router;
 //# sourceMappingURL=job.js.map

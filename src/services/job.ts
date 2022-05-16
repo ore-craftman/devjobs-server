@@ -56,13 +56,13 @@ const updateJob = async (id: any, newData: any) => {
   });
 
   if (!updateJob) return "Error updating job";
-  else return updateJob;
+  else return updatedJob;
 };
 
 const deleteJob = async (id: any) => {
   if (!mongoose.Types.ObjectId.isValid(id)) return "Invalid job id";
 
-  const deletedData = await User.deleteOne({ _id: id });
+  const deletedData = await Job.deleteOne({ _id: id });
   return deletedData.deletedCount;
 };
 

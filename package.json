@@ -1,4 +1,7 @@
 {
+  "engines": {
+    "node": "16.14.2"
+  },
   "name": "devjobs-server",
   "version": "1.0.0",
   "main": "dist/index.js",
@@ -21,7 +24,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "start": "tsc & node .",
+    "start": "node .",
     "dev": "tsc -w & nodemon .",
     "test": "NODE_ENV=test jest --watchAll --coverage --verbose"
   },

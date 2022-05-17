@@ -24,7 +24,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "start": "node .",
+    "start": "tsc & node .",
     "dev": "tsc -w & nodemon .",
     "test": "NODE_ENV=test jest --watchAll --coverage --verbose"
   },
@@ -33,5 +33,6 @@
     "coveragePathIgnorePatterns": [
       "/node_modules/"
     ]
-  }
+  },
+  "private": true
 }

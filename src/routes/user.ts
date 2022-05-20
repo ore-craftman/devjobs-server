@@ -5,6 +5,7 @@ const {
   authenticateUser,
   getUserById,
   deleteUser,
+  verifyUserEmail,
 } = require("../services/user");
 
 router.post("/create", async (req: Request, res: Response) => {
@@ -63,6 +64,18 @@ router.post("/auth", async (req: Request, res: Response): Promise<Response> => {
     });
   }
 });
+
+router.get(
+  "/verify/:userToken",
+  async (req: Request, res: Response): Promise<Response> => {
+    const { userToken } = req.params;
+    const verifiedUser = await verifyUserEmail(userToken);
+    return res.send({
+      status: typeof verifiedUser !== "string" ? "OK" : "Error",
+      message: verifiedUser,
+    });
+  }
+);
 
 router.get(
   "/account/:id",

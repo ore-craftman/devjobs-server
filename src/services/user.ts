@@ -75,6 +75,18 @@ const authenticateUser = async (email: string, password: string) => {
   }
 };
 
+const verifyUserEmail = async (userToken: string) => {
+  const user = await User.findOneAndUpdate(
+    { token: userToken },
+    { status: true },
+    { new: true }
+  );
+
+  if (!user) {
+    return "Invalid email verification link";
+  } else return user;
+};
+
 const getUserById = async (id: any) => {
   if (!mongoose.Types.ObjectId.isValid(id)) return "Invalid user id";
 
@@ -90,4 +102,10 @@ const deleteUser = async (id: any) => {
   return deletedData.deletedCount;
 };
 
-module.exports = { createUser, authenticateUser, getUserById, deleteUser };
+module.exports = {
+  createUser,
+  authenticateUser,
+  getUserById,
+  deleteUser,
+  verifyUserEmail,
+};

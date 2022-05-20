@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const router = express_1.default.Router();
-const { createUser, authenticateUser, getUserById, deleteUser, } = require("../services/user");
+const { createUser, authenticateUser, getUserById, deleteUser, verifyUserEmail, } = require("../services/user");
 router.post("/create", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!req.body.hasOwnProperty("firstname") ||
         !req.body.hasOwnProperty("lastname") ||
@@ -49,6 +49,14 @@ router.post("/auth", (req, res) => __awaiter(void 0, void 0, void 0, function* (
             data: user,
         });
     }
+}));
+router.get("/verify/:userToken", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { userToken } = req.params;
+    const verifiedUser = yield verifyUserEmail(userToken);
+    return res.send({
+        status: typeof verifiedUser !== "string" ? "OK" : "Error",
+        message: verifiedUser,
+    });
 }));
 router.get("/account/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;

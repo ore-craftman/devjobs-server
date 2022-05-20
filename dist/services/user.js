@@ -91,6 +91,14 @@ const authenticateUser = (email, password) => __awaiter(void 0, void 0, void 0, 
         }
     }
 });
+const verifyUserEmail = (userToken) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield User.findOneAndUpdate({ token: userToken }, { status: true }, { new: true });
+    if (!user) {
+        return "Invalid email verification link";
+    }
+    else
+        return user;
+});
 const getUserById = (id) => __awaiter(void 0, void 0, void 0, function* () {
     if (!mongoose.Types.ObjectId.isValid(id))
         return "Invalid user id";
@@ -106,5 +114,11 @@ const deleteUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const deletedData = yield User.deleteOne({ _id: id });
     return deletedData.deletedCount;
 });
-module.exports = { createUser, authenticateUser, getUserById, deleteUser };
+module.exports = {
+    createUser,
+    authenticateUser,
+    getUserById,
+    deleteUser,
+    verifyUserEmail,
+};
 //# sourceMappingURL=user.js.map

@@ -1,6 +1,12 @@
 const nodemailer = require("nodemailer");
 
-const mailer = (reciever: string, title: string, message: string) => {
+interface PropSchema {
+  reciever: string;
+  title: string;
+  template: string;
+}
+
+const mailer = (mailInfo: PropSchema) => {
   const transporter = nodemailer.createTransport({
     service: "hotmail",
     auth: {
@@ -11,14 +17,14 @@ const mailer = (reciever: string, title: string, message: string) => {
 
   const mailOptions = {
     from: "ore.dev@hotmail.com",
-    to: reciever,
-    subject: title,
-    text: message,
+    to: mailInfo.reciever,
+    subject: mailInfo.title,
+    html: mailInfo.template,
   };
 
   transporter.sendMail(mailOptions, function (error: any, info: any) {
     if (error) {
-      console.log(error);
+      console.log("Nodemailer err: ", error);
     } else {
       console.log("Email sent: " + info.response);
     }

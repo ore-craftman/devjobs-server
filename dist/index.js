@@ -27,6 +27,11 @@ app.use(express_1.default.urlencoded({ extended: true }));
 // Route Handler
 app.use(`/${baseUrl}/users`, userRoutes);
 app.use(`/${baseUrl}/job`, jobRoutes);
+app.use("/*", (req, res) => {
+    return res
+        .status(404)
+        .send({ status: "Client Error", message: "Route not found" });
+});
 // Server && DB Handler
 try {
     if (process.env.NODE_ENV !== "test")

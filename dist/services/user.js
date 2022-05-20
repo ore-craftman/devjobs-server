@@ -62,9 +62,16 @@ const createUser = (firstname, lastname, email, keyMaster, password, companyName
             return "Error creating account";
         }
         else {
-            // ! COMPLETE MAILER's ACTION
-            const env = process.env.ENVIROMENT;
-            mailer(email, "Email Verification | DevJobs", `Click the link below to verify your email address <br/> ${env == "local" ? "localhost:3000" : "https://devjobs-xi.vercel.app"}/verify/${user.token}`);
+            const verifcationUrl = `https://${process.env.ENVIROMENT == "local"
+                ? "localhost:3000"
+                : "devjobs-xi.vercel.app"}/verify/${user.token}`;
+            mailer({
+                reciever: email,
+                title: "Email Verification | DevJobs",
+                template: `<h3>Hello ${user.firstname} </h3> <p>You registered an account on <a href="https://devjobs-xi.vercel.app">Devjobs</a>, before being able to use
+         your account you need to verify that this is your email address by clicking
+        <a href="${verifcationUrl}">here</a> </p> <br/> <br/> Kind Regards, DevJobs`,
+            });
             return userInstace;
         }
     }

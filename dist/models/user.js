@@ -7,6 +7,8 @@ const userSchema = new Schema({
     hash: { type: String, required: true },
     salt: { type: String, required: true },
     keyMaster: { type: Boolean, required: true },
+    status: Boolean,
+    token: { type: String, required: true },
     companyName: String,
     companyUrl: String,
 }, { timestamps: true });

@@ -35,6 +35,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const crypto = __importStar(require("crypto"));
 const { User } = require("../models/user");
 const mongoose = require("mongoose");
+const mailer = require("./mailer");
 const createUser = (firstname, lastname, email, keyMaster, password, companyName, companyUrl) => __awaiter(void 0, void 0, void 0, function* () {
     if (yield User.exists({ email: email })) {
         return "Account already exist";
@@ -46,17 +47,24 @@ const createUser = (firstname, lastname, email, keyMaster, password, companyName
         user.lastname = lastname;
         user.email = email;
         user.keyMaster = keyMaster;
+        user.status = false;
         companyName ? (user.companyName = companyName) : null;
         companyUrl ? (user.companyUrl = companyUrl) : null;
         user.salt = salt;
         user.hash = crypto
             .pbkdf2Sync(password, salt, 1000, 64, `sha512`)
             .toString(`hex`);
+        user.token = crypto
+            .pbkdf2Sync(user.hash, salt, 1000, 64, `sha512`)
+            .toString(`hex`);
         const userInstace = yield user.save();
         if (!userInstace) {
             return "Error creating account";
         }
         else {
+            // ! COMPLETE MAILER's ACTION
+            const env = process.env.ENVIROMENT;
+            mailer(email, "Email Verification | DevJobs", `Click the link below to verify your email address <br/> ${env == "local" ? "localhost:3000" : "https://devjobs-xi.vercel.app"}/verify/${user.token}`);
             return userInstace;
         }
     }

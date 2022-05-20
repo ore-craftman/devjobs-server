@@ -1,6 +1,7 @@
 import * as crypto from "crypto";
 const { User } = require("../models/user");
 const mongoose = require("mongoose");
+const mailer = require("./mailer");
 
 const createUser = async (
   firstname: string,
@@ -21,6 +22,7 @@ const createUser = async (
     user.lastname = lastname;
     user.email = email;
     user.keyMaster = keyMaster;
+    user.status = false;
     companyName ? (user.companyName = companyName) : null;
     companyUrl ? (user.companyUrl = companyUrl) : null;
 
@@ -29,11 +31,26 @@ const createUser = async (
       .pbkdf2Sync(password, salt, 1000, 64, `sha512`)
       .toString(`hex`);
 
+    user.token = crypto
+      .pbkdf2Sync(user.hash, salt, 1000, 64, `sha512`)
+      .toString(`hex`);
+
     const userInstace = await user.save();
 
     if (!userInstace) {
       return "Error creating account";
     } else {
+      // ! COMPLETE MAILER's ACTION
+      const env = process.env.ENVIROMENT;
+
+      mailer(
+        email,
+        "Email Verification | DevJobs",
+        `Click the link below to verify your email address <br/> ${
+          env == "local" ? "localhost:3000" : "https://devjobs-xi.vercel.app"
+        }/verify/${user.token}`
+      );
+
       return userInstace;
     }
   }

@@ -31,7 +31,7 @@ app.use(`/${baseUrl}/job`, jobRoutes);
 try {
     if (process.env.NODE_ENV !== "test")
         app.listen(port, () => {
-            console.log(`⚡️[server]: Live @ https://localhost:${port}`);
+            console.log(`⚡️[Server]: Live @ Port:${port}`);
             mongoose.set("bufferCommands", true);
             if (process.env.NODE_ENV !== "test") {
                 mongoose.connect(dbURI, (err) => {

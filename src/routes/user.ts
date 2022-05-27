@@ -46,24 +46,27 @@ router.post("/create", async (req: Request, res: Response) => {
   }
 });
 
-router.post("/auth", async (req: Request, res: Response): Promise<Response> => {
-  if (
-    !req.body.hasOwnProperty("email") ||
-    !req.body.hasOwnProperty("password")
-  ) {
-    return res
-      .status(406)
-      .send({ status: "Client error", message: "Incomplete user input" });
-  } else {
-    const { email, password } = req.body;
-    const user = await authenticateUser(email, password);
+router.post(
+  "/auth",
+  async (req: Request, res: Response): Promise<Response> => {
+    if (
+      !req.body.hasOwnProperty("email") ||
+      !req.body.hasOwnProperty("password")
+    ) {
+      return res
+        .status(406)
+        .send({ status: "Client error", message: "Incomplete user input" });
+    } else {
+      const { email, password } = req.body;
+      const user = await authenticateUser(email, password);
 
-    return res.send({
-      status: typeof user !== "string" ? "OK" : "Error",
-      data: user,
-    });
+      return res.send({
+        status: typeof user !== "string" ? "OK" : "Error",
+        data: user,
+      });
+    }
   }
-});
+);
 
 router.get(
   "/verify/:userToken",
